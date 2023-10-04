@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script>
+        function getData(){
+            let promistObject = fetch("http://localhost:8080/outfit.json")
+            promistObject.then(
+                res => res.json()
+            ).then(d => {
+                var shirts = []
+                var pants = []
+                var shoes = []
+                combinations = []
+                for (const item of d) {
+                    if(item.clothing == "Shirt"){
+                        shirts.push(item)
+                    }
+                    else if(item.clothing == "Pant"){
+                        pants.push(item)
+                    }
+                    else if(item.clothing == "Shoes"){
+                        shoes.push(item)
+                    }
+                
+                }
+                for (firItem of shirts){
+                    for(secItem of pants){
+                        for(thirItem of shoes){
+                            var currentCombo = []
+                            currentCombo.push(firItem.brand + " " + firItem.clothing)
+                            currentCombo.push(secItem.brand + " " + secItem.clothing)
+                            currentCombo.push(thirItem.brand + " " + thirItem.clothing)
+                            combinations.push(currentCombo)
+                        }
+                    }
+                 }
+                 console.log(combinations)
+                 for (const combos of combinations){
+                    const ClothingListUl = document.createElement("ul");
+                    ClothingListUl.style.marginBottom = "30px";
+                    for (const ind of combos){
+
+                        const li = document.createElement("li");
+                        li.textContent = ind
+                        ClothingListUl.appendChild(li);
+                        
+
+                        
+                    }
+                    document.body.appendChild(ClothingListUl);
+                 }
+                
+
+            })
+        }
+    </script>
+    <title>Basic HTML Page</title>
+</head>
+<body onload="getData()">
+    <h1>Hello, World!</h1>
+    <p>This is a basic HTML pages.</p>
+</body>
+</html>

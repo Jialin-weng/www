@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+            Showing use of async
+        </title>
+    </head>
+    <body>
+
+        <h1>
+            Here is my test page
+        </h1>
+        <p id="selection">
+        </p>
+        <p id="output">
+
+        </p>
+    </body>
+</html>
+<script>
+    // Draw a list on the page that has one item for each in optionData.json
+    async function pageSetup() {
+        // Get my number from optionData
+        let optionCount = await getOptionCount();
+        console.log(optionCount);
+        const targetSelection = document.getElementById("selection");
+        let list = document.createElement("ul");
+        for (let i = 0; i < optionCount; i++) {
+            let li = document.createElement("li");
+            li.setAttribute("id", "li" + i);
+            li.innerHTML = " delay for " + i;
+            li.onclick = () => fillOutput(i);
+            list.appendChild(li);
+        }
+        targetSelection.append(list);
+    }
+
+    async function getOptionCount() {
+        try {
+            let response = await fetch("optionData.json");
+            let data = await response.json();
+            return data.optionCount;
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    async function fillOutput(option) {
+        try {
+            let response = await fetch('http://localhost:8080/cgi-bin/timedscript.pl?option=' + option);
+            let text = await response.text();
+            document.getElementById("output").innerHTML += text;
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    // Call pageSetup after the DOM is fully loaded
+    document.addEventListener("DOMContentLoaded", pageSetup);
+</script>

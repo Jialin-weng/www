@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        #calculateButton:hover { background-color: yellow; }
+        #calculateButton { border: 2px solid red; }
+    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clothing Cost Calculator</title>
+    <script>
+        var addedItems = [];
+
+        function calculateTotal() {
+            var totalCost = 0;
+
+            for (var i = 0; i < addedItems.length; i++) {
+                var cost = parseFloat(addedItems[i].cost);
+                totalCost += cost;
+            }
+
+            document.getElementById("totalCost").textContent = "Total Cost: $" + totalCost.toFixed(2);
+        }
+
+        function addItem() {
+            var itemName = document.getElementById("itemName").value;
+            var itemCost = document.getElementById("itemCost").value;
+
+            if (itemName && itemCost) {
+                addedItems.push({ name: itemName, cost: itemCost });
+
+                var itemList = document.getElementById("itemList");
+                var listItem = document.createElement("li");
+                listItem.textContent = itemName + " ($" + itemCost + ")";
+                itemList.appendChild(listItem);
+
+                calculateTotal();
+
+                // Clear input values
+                document.getElementById("itemName").value = "";
+                document.getElementById("itemCost").value = "";
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>Clothing Cost Calculator</h1>
+    <label for="itemName">Item Name:</label>
+    <input type="text" id="itemName" placeholder="Item name">
+    <label for="itemCost">Cost ($):</label>
+    <input type="number" id="itemCost" placeholder="Cost">
+    <button onclick="addItem()">Add</button>
+
+    <h2>Added Items:</h2>
+    <ul id="itemList"></ul>
+
+    <p id="totalCost">Total Cost: $0.00</p>
+</body>
+</html>

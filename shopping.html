@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping</title>
+    <script>
+        var cust = null
+        function createShoppingList(){
+            const egg = new Product("egg", 10);
+            const hammer = new Product("hammer", 15);
+            const ice = new Product("ice", 30);
+            const Walmart = new Store("Walmart", [new Product(egg.name, 30), new Product(hammer.name, 50),new Product(ice.name, 30)]);
+            const Target = new Store("Target", [new Product(egg.name, 20), new Product(hammer.name, 100),new Product(ice.name, 20)]);
+            cust = new Shopper([egg, hammer,ice], [Walmart, Target]);
+            cust.generateShoppingSuggestions();
+            const shoppingList = cust.shoppingList;
+            const shoppingListUl = document.createElement("ul");
+
+            shoppingList.forEach(function(item) {
+                const li = document.createElement("li");
+                li.textContent = item.name;
+                shoppingListUl.appendChild(li);
+            });
+
+            const shoppingListTitle = document.createElement("h2");
+            shoppingListTitle.textContent = "Shopping List";
+            document.body.appendChild(shoppingListTitle);
+            document.body.appendChild(shoppingListUl);
+
+        }
+        function createBestList() {
+            const bestShopsList = cust.bestShopsList;
+            const bestShopsUl = document.createElement("ul");
+            bestShopsList.forEach(function(item) {
+                const li = document.createElement("li");
+                li.textContent = `${item.key}: ${item.value}`;
+                bestShopsUl.appendChild(li);
+            });
+
+
+            const bestShopsTitle = document.createElement("h2");
+            bestShopsTitle.textContent = "Best Shops List";
+            document.body.appendChild(bestShopsTitle);
+            document.body.appendChild(bestShopsUl);
+        }
+
+        class Product {
+            constructor(name, price) {
+                this.name = name;
+                this.price = price;
+            };
+        }
+
+        class Store {
+            constructor(name, productList) {
+                this.name = name;
+                this.productList = productList;
+            };
+        }
+
+        class Shopper {
+            constructor(shoppingList, store) {
+                this.shoppingList = shoppingList;
+                this.store = store;
+            };
+
+            generateShoppingSuggestions() {
+                var shoppingDict = {}
+                var bestShops = {}
+                for (const item of this.shoppingList) {
+                    shoppingDict[item.name] = Infinity; // Initialize with Infinity
+                    bestShops[item.name] = "";
+                }
+                for (const item of this.shoppingList) {
+                    for (const stores of this.store) {
+                        for (const product of stores.productList) {
+                            if (product.name == item.name) {
+                                if (product.price <= shoppingDict[item.name]) {
+                                    bestShops[item.name] = `${stores.name} ($${product.price})`;
+                                    shoppingDict[item.name] = product.price;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                // Convert bestShops object to an array of key-value pairs
+                this.bestShopsList = Object.entries(bestShops).map(([key, value]) => ({ key, value }));
+                console.log(this.bestShopsList);
+            }
+        }
+    </script>
+</head>
+<body onload="createShoppingList()">
+    <h1>Shopping List</h1>
+    <button onclick="createBestList()">Generate</button>
+</body>
+</html>

@@ -1,0 +1,20 @@
+
+
+
+
+
+function loadGameBoard(){
+    initialize gameboard and create the players
+}
+
+function makeMove(){
+    check if move is valid if it is make move
+}
+
+function CheckWin(){
+    after every move check if current user has won
+}
+
+function switchPlayer(){
+    switch the turns of the player
+}

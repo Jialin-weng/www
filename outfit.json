@@ -1,0 +1,39 @@
+[
+    {
+      "clothing": "Shirt",
+      "brand": "Nike",
+      "color": "Red",
+      "price": 30
+    },
+    {
+      "clothing": "Shirt",
+      "brand": "Adidas",
+      "color": "Blue",
+      "price": 25
+    },
+    {
+      "clothing": "Pant",
+      "brand": "Levi's",
+      "color": "Black",
+      "price": 60
+    },
+    {
+      "clothing": "Pant",
+      "brand": "Wrangler",
+      "color": "Blue",
+      "price": 55
+    },
+    {
+      "clothing": "Shoes",
+      "brand": "Nike",
+      "color": "White",
+      "price": 80
+    },
+    {
+      "clothing": "Shoes",
+      "brand": "Adidas",
+      "color": "Black",
+      "price": 75
+    }
+  ]
+  

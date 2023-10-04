@@ -1,0 +1,4 @@
+type,brand,color,cost
+shirt,nike,black,95
+pants,adidas,blue,10
+shoes,asics,red,20
