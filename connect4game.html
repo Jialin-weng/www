@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+    <style>
+        
+        .game-board-table {
+            border-collapse: collapse;
+        }
+    
+        .game-board-table td {
+            width: 40px; 
+            height: 40px;
+            text-align: center;
+            vertical-align: middle;
+            font-size: 24px; 
+            font-weight: bold; 
+            padding: 5px; 
+        }
+    </style>
+    <script>
+        let currentPlayer = 1;
+        let fetchedData;
+        function loadGameboard() {
+    fetch('http://localhost:3000/gameboard')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            fetchedData = data;
+            console.log(fetchedData);
+            displayGameboard();
+        })
+        .catch(error => {
+            console.error('Fetch error:', error);
+        });
+}
+function handleCellClick(row, col) {
+            const player = determinePlayerTurn();
+            fetch('/play', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ row, col, player }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    updateGameBoardCell(row, col, player);
+                    togglePlayerTurn();
+                } else {
+                    console.error(data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Request error:', error);
+            });
+        }
+
+function displayGameboard() {
+    const gameBoardTable = document.getElementById('game-board');
+    while (gameBoardTable.firstChild) {
+        gameBoardTable.removeChild(gameBoardTable.firstChild);
+    }
+    for (let row = 0; row < fetchedData.length; row++) {
+        const tableRow = document.createElement('tr');
+        for (let col = 0; col < fetchedData[row].length; col++) {
+            const tableCell = document.createElement('td');
+            tableCell.textContent = fetchedData[row][col];
+            tableRow.appendChild(tableCell);
+        }
+        gameBoardTable.appendChild(tableRow);
+    }
+}
+loadGameboard();
+    </script>
+<head>
+    <title>Connect 4 Game</title>
+</head>
+<body>
+    <h1>Connect 4 Game</h1>
+    <table id="game-board" class="game-board-table">
+    </table>
+</body>
+</html>
